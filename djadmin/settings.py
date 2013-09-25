@@ -2,7 +2,7 @@ from decouple import Config
 
 config = Config('settings.ini')
 
-DEBUG = True
+DEBUG = config('DEBUG')
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -14,8 +14,8 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djadmin',
-        'USER': 'root',
+        'NAME': config('DATABASE_NAME'),
+        'USER': config('DATABASE_USER'),
         'PASSWORD': '',
         'HOST': '',
         'PORT': '',
@@ -53,7 +53,6 @@ STATICFILES_FINDERS = (
 )
 
 SECRET_KEY = config('SECRET_KEY')
-# SECRET_KEY = 'e0dwvf%+vhghu&5tr@wti(5whpk-$i$p=gz@6^irm5h29@@@4q'
 
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -84,6 +83,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'apps.core',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
