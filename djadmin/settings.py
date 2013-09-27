@@ -1,4 +1,8 @@
 from decouple import Config
+import os
+
+PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..')
+location = lambda x: os.path.join(PROJECT_ROOT, x)
 
 config = Config('settings.ini')
 
@@ -36,7 +40,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-MEDIA_ROOT = ''
+MEDIA_ROOT = location('media')
 
 MEDIA_URL = ''
 
