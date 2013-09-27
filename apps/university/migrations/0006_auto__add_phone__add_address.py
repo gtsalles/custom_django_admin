@@ -14,7 +14,7 @@ class Migration(SchemaMigration):
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('number', self.gf('django.db.models.fields.CharField')(max_length=15)),
         ))
-        db.send_create_signal(u'core', ['Phone'])
+        db.send_create_signal(u'university', ['Phone'])
 
         # Adding model 'Address'
         db.create_table(u'core_address', (
@@ -25,7 +25,7 @@ class Migration(SchemaMigration):
             ('neighborhood', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('city', self.gf('django.db.models.fields.CharField')(max_length=30)),
         ))
-        db.send_create_signal(u'core', ['Address'])
+        db.send_create_signal(u'university', ['Address'])
 
 
     def backwards(self, orm):
@@ -73,7 +73,7 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'core.address': {
+        u'university.address': {
             'Meta': {'object_name': 'Address'},
             'city': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -82,7 +82,7 @@ class Migration(SchemaMigration):
             'street': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
-        u'core.commonuser': {
+        u'university.commonuser': {
             'Meta': {'object_name': 'CommonUser'},
             'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'address': ('django.db.models.fields.CharField', [], {'max_length': '75', 'blank': 'True'}),
@@ -93,13 +93,13 @@ class Migration(SchemaMigration):
             'phone': ('django.db.models.fields.CharField', [], {'max_length': '11', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
-        u'core.phone': {
+        u'university.phone': {
             'Meta': {'object_name': 'Phone'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'number': ('django.db.models.fields.CharField', [], {'max_length': '15'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
-        u'core.superuser': {
+        u'university.superuser': {
             'Meta': {'object_name': 'SuperUser'},
             'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'address': ('django.db.models.fields.CharField', [], {'max_length': '75', 'blank': 'True'}),
@@ -112,4 +112,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['core']
+    complete_apps = ['university']

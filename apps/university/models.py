@@ -2,6 +2,14 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
+SEMESTER_CHOICES = (
+    ('0', '2013.1'),
+    ('1', '2013.2'),
+    ('2', '2014.1'),
+    ('3', '2014.2'),
+)
+
+
 class Student(models.Model):
     """
     Model to represent a Student in a University
@@ -38,7 +46,7 @@ class Course(models.Model):
     slug = models.SlugField()
     department = models.ForeignKey(Department)
     student = models.ManyToManyField(Student, blank=True)
-    semester = models.CharField(_('Semester'), max_length=10)
+    semester = models.CharField(_('Semester'), max_length=10, choices=SEMESTER_CHOICES)
 
     def __unicode__(self):
         return u'%s - %s' % (self.name, self.department.name)

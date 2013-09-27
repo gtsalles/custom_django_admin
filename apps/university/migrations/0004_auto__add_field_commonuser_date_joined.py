@@ -8,15 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'CommonUser.active'
-        db.add_column(u'core_commonuser', 'active',
-                      self.gf('django.db.models.fields.BooleanField')(default=True),
+        # Adding field 'CommonUser.date_joined'
+        db.add_column(u'core_commonuser', 'date_joined',
+                      self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, default=None, blank=True),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting field 'CommonUser.active'
-        db.delete_column(u'core_commonuser', 'active')
+        # Deleting field 'CommonUser.date_joined'
+        db.delete_column(u'core_commonuser', 'date_joined')
 
 
     models = {
@@ -56,10 +56,11 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'core.commonuser': {
+        u'university.commonuser': {
             'Meta': {'object_name': 'CommonUser'},
             'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'address': ('django.db.models.fields.CharField', [], {'max_length': '75', 'blank': 'True'}),
+            'date_joined': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
@@ -68,4 +69,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['core']
+    complete_apps = ['university']

@@ -8,20 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'CommonUser'
-        db.create_table(u'core_commonuser', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=30)),
-            ('email', self.gf('django.db.models.fields.EmailField')(max_length=75)),
-            ('address', self.gf('django.db.models.fields.CharField')(max_length=75)),
-        ))
-        db.send_create_signal(u'core', ['CommonUser'])
+        # Adding field 'CommonUser.phone'
+        db.add_column(u'core_commonuser', 'phone',
+                      self.gf('django.db.models.fields.CharField')(default='', max_length=11, blank=True),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting model 'CommonUser'
-        db.delete_table(u'core_commonuser')
+        # Deleting field 'CommonUser.phone'
+        db.delete_column(u'core_commonuser', 'phone')
 
 
     models = {
@@ -61,14 +56,15 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'core.commonuser': {
+        u'university.commonuser': {
             'Meta': {'object_name': 'CommonUser'},
-            'address': ('django.db.models.fields.CharField', [], {'max_length': '75'}),
+            'address': ('django.db.models.fields.CharField', [], {'max_length': '75', 'blank': 'True'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
+            'phone': ('django.db.models.fields.CharField', [], {'max_length': '11', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         }
     }
 
-    complete_apps = ['core']
+    complete_apps = ['university']

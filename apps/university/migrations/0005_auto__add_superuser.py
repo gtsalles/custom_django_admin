@@ -19,7 +19,7 @@ class Migration(SchemaMigration):
             ('active', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('date_joined', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
-        db.send_create_signal(u'core', ['SuperUser'])
+        db.send_create_signal(u'university', ['SuperUser'])
 
 
     def backwards(self, orm):
@@ -64,7 +64,7 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'core.commonuser': {
+        u'university.commonuser': {
             'Meta': {'object_name': 'CommonUser'},
             'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'address': ('django.db.models.fields.CharField', [], {'max_length': '75', 'blank': 'True'}),
@@ -75,7 +75,7 @@ class Migration(SchemaMigration):
             'phone': ('django.db.models.fields.CharField', [], {'max_length': '11', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
-        u'core.superuser': {
+        u'university.superuser': {
             'Meta': {'object_name': 'SuperUser'},
             'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'address': ('django.db.models.fields.CharField', [], {'max_length': '75', 'blank': 'True'}),
@@ -88,4 +88,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['core']
+    complete_apps = ['university']

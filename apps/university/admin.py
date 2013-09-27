@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.contrib import admin
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
@@ -28,15 +29,11 @@ class StudentAdmin(admin.ModelAdmin):
     inlines = [AddresInline, PhoneInline]
 
     def activate_users(self, request, queryset):
-        for q in queryset:
-            q.active = True
-            q.save()
+        queryset.update(active=True)
         messages.success(request, _('Users activated!'))
 
     def deactivate_users(self, request, queryset):
-        for q in queryset:
-            q.active = False
-            q.save()
+        queryset.update(active=False)
         messages.success(request, _('Users deactivated!'))
 
     def get_img(self, obj):
@@ -49,18 +46,12 @@ class StudentAdmin(admin.ModelAdmin):
 
     def add_course(self, obj):
         return u'<a target="_blank" onclick="return showAddAnotherPopup(this);"' \
-               u'href="/admin/core/course_student/add/?student_id=%s">Matricular</a>' % obj.id
+               u'href="/admin/university/course_student/add/?student_id=%s">Matricular</a>' % obj.id
     add_course.allow_tags = True
     add_course.short_description = _('Add Course')
 
 
 admin.site.register(Student, StudentAdmin)
-
-
-class CourseAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('name',)}
-
-admin.site.register(Course, CourseAdmin)
 
 
 class RegistrationAdmin(admin.ModelAdmin):

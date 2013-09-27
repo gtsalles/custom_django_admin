@@ -19,7 +19,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=30)),
         ))
-        db.send_create_signal(u'core', ['Department'])
+        db.send_create_signal(u'university', ['Department'])
 
         # Adding model 'Student'
         db.create_table(u'core_student', (
@@ -29,23 +29,23 @@ class Migration(SchemaMigration):
             ('active', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('date_joined', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
-        db.send_create_signal(u'core', ['Student'])
+        db.send_create_signal(u'university', ['Student'])
 
         # Adding model 'Course'
         db.create_table(u'core_course', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=30)),
-            ('department', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Department'])),
+            ('department', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['university.Department'])),
             ('semester', self.gf('django.db.models.fields.CharField')(max_length=10)),
         ))
-        db.send_create_signal(u'core', ['Course'])
+        db.send_create_signal(u'university', ['Course'])
 
         # Adding M2M table for field student on 'Course'
         m2m_table_name = db.shorten_name(u'core_course_student')
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('course', models.ForeignKey(orm[u'core.course'], null=False)),
-            ('student', models.ForeignKey(orm[u'core.student'], null=False))
+            ('course', models.ForeignKey(orm[u'university.course'], null=False)),
+            ('student', models.ForeignKey(orm[u'university.student'], null=False))
         ))
         db.create_unique(m2m_table_name, ['course_id', 'student_id'])
 
@@ -54,7 +54,7 @@ class Migration(SchemaMigration):
 
         # Adding field 'Phone.student'
         db.add_column(u'core_phone', 'student',
-                      self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['core.Student']),
+                      self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['university.Student']),
                       keep_default=False)
 
         # Deleting field 'Address.user'
@@ -62,7 +62,7 @@ class Migration(SchemaMigration):
 
         # Adding field 'Address.student'
         db.add_column(u'core_address', 'student',
-                      self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['core.Student']),
+                      self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['university.Student']),
                       keep_default=False)
 
 
@@ -78,7 +78,7 @@ class Migration(SchemaMigration):
             ('email', self.gf('django.db.models.fields.EmailField')(max_length=75)),
             ('date_joined', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
-        db.send_create_signal(u'core', ['CommonUser'])
+        db.send_create_signal(u'university', ['CommonUser'])
 
         # Adding model 'SuperUser'
         db.create_table(u'core_superuser', (
@@ -91,7 +91,7 @@ class Migration(SchemaMigration):
             ('email', self.gf('django.db.models.fields.EmailField')(max_length=75)),
             ('date_joined', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
-        db.send_create_signal(u'core', ['SuperUser'])
+        db.send_create_signal(u'university', ['SuperUser'])
 
         # Deleting model 'Department'
         db.delete_table(u'core_department')
@@ -123,35 +123,35 @@ class Migration(SchemaMigration):
 
 
     models = {
-        u'core.address': {
+        u'university.address': {
             'Meta': {'object_name': 'Address'},
             'city': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'neighborhood': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'number': ('django.db.models.fields.IntegerField', [], {'max_length': '10'}),
             'street': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'student': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Student']"})
+            'student': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['university.Student']"})
         },
-        u'core.course': {
+        u'university.course': {
             'Meta': {'object_name': 'Course'},
-            'department': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Department']"}),
+            'department': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['university.Department']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'semester': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
-            'student': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['core.Student']", 'symmetrical': 'False'})
+            'student': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['university.Student']", 'symmetrical': 'False'})
         },
-        u'core.department': {
+        u'university.department': {
             'Meta': {'object_name': 'Department'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '30'})
         },
-        u'core.phone': {
+        u'university.phone': {
             'Meta': {'object_name': 'Phone'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'number': ('django.db.models.fields.CharField', [], {'max_length': '15'}),
-            'student': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Student']"})
+            'student': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['university.Student']"})
         },
-        u'core.student': {
+        u'university.student': {
             'Meta': {'object_name': 'Student'},
             'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
@@ -161,4 +161,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['core']
+    complete_apps = ['university']

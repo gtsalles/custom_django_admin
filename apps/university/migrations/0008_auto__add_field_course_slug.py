@@ -8,56 +8,55 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Student.department'
-        db.add_column(u'core_student', 'department',
-                      self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['core.Department']),
+        # Adding field 'Course.slug'
+        db.add_column(u'core_course', 'slug',
+                      self.gf('django.db.models.fields.SlugField')(default=None, max_length=50),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting field 'Student.department'
-        db.delete_column(u'core_student', 'department_id')
+        # Deleting field 'Course.slug'
+        db.delete_column(u'core_course', 'slug')
 
 
     models = {
-        u'core.address': {
+        u'university.address': {
             'Meta': {'object_name': 'Address'},
             'city': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'neighborhood': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'number': ('django.db.models.fields.IntegerField', [], {'max_length': '10'}),
             'street': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'student': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Student']"})
+            'student': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['university.Student']"})
         },
-        u'core.course': {
+        u'university.course': {
             'Meta': {'object_name': 'Course'},
-            'department': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Department']"}),
+            'department': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['university.Department']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'semester': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50'}),
-            'student': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['core.Student']", 'symmetrical': 'False', 'blank': 'True'})
+            'student': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['university.Student']", 'symmetrical': 'False'})
         },
-        u'core.department': {
+        u'university.department': {
             'Meta': {'object_name': 'Department'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '30'})
         },
-        u'core.phone': {
+        u'university.phone': {
             'Meta': {'object_name': 'Phone'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'number': ('django.db.models.fields.CharField', [], {'max_length': '15'}),
-            'student': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Student']"})
+            'student': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['university.Student']"})
         },
-        u'core.student': {
+        u'university.student': {
             'Meta': {'object_name': 'Student'},
             'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'department': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Department']"}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '30'})
         }
     }
 
-    complete_apps = ['core']
+    complete_apps = ['university']

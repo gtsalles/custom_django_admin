@@ -8,15 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'CommonUser.phone'
-        db.add_column(u'core_commonuser', 'phone',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=11, blank=True),
+        # Adding field 'CommonUser.active'
+        db.add_column(u'core_commonuser', 'active',
+                      self.gf('django.db.models.fields.BooleanField')(default=True),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting field 'CommonUser.phone'
-        db.delete_column(u'core_commonuser', 'phone')
+        # Deleting field 'CommonUser.active'
+        db.delete_column(u'core_commonuser', 'active')
 
 
     models = {
@@ -56,8 +56,9 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'core.commonuser': {
+        u'university.commonuser': {
             'Meta': {'object_name': 'CommonUser'},
+            'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'address': ('django.db.models.fields.CharField', [], {'max_length': '75', 'blank': 'True'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -67,4 +68,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['core']
+    complete_apps = ['university']
