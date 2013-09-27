@@ -1,6 +1,7 @@
-from django.core.urlresolvers import reverse
+from django.core.serializers import serialize
 from django.contrib import admin
 from django.contrib import messages
+from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
 from .models import Student, Department, Course, Address, Phone
 
@@ -25,16 +26,16 @@ class StudentAdmin(admin.ModelAdmin):
     # list_editable = ('active',)
     list_filter = ('active', 'date_joined')
     search_fields = ('name', 'email')
-    actions = ['activate_users', 'deactivate_users']
+    actions = ['activate_users', 'deactivate_users', 'export_as_json']
     inlines = [AddresInline, PhoneInline]
 
     def activate_users(self, request, queryset):
         queryset.update(active=True)
-        messages.success(request, _('Users activated!'))
+        messages.success(request, _('User(s) activated!'))
 
     def deactivate_users(self, request, queryset):
         queryset.update(active=False)
-        messages.success(request, _('Users deactivated!'))
+        messages.success(request, _('User(s) deactivated!'))
 
     def get_img(self, obj):
         if obj.picture:
@@ -50,8 +51,25 @@ class StudentAdmin(admin.ModelAdmin):
     add_course.allow_tags = True
     add_course.short_description = _('Add Course')
 
+    def export_as_json(self, request, queryset):
+        response = HttpResponse(content_type='application/json')
+        serialize('json', queryset, stream=response)
+        return response
+
 
 admin.site.register(Student, StudentAdmin)
+
+
+class CourseAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('name',)}
+
+    def formfield_for_choice_field(self, db_field, request=None, **kwargs):
+        # if db_field.name == 'semester':
+        #     print kwargs
+            # kwargs['choices'] += ('5', '2015.1')
+        return super(CourseAdmin, self).formfield_for_choice_field(db_field, request, **kwargs)
+
+admin.site.register(Course, CourseAdmin)
 
 
 class RegistrationAdmin(admin.ModelAdmin):
