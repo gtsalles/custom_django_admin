@@ -1,0 +1,10 @@
+{% extends 'admin/base_site.html' %}
+
+{% block content %}
+    <form action="" accept-charset="utf-8" method="POST">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" name="action" value="send_msg" />
+        <input type="hidden" name="post" value="yes" />
+        <input type="submit" value="Enviar"/>
+    </form>
+{% endblock %}

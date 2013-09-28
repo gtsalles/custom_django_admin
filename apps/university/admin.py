@@ -1,9 +1,12 @@
 from django.core.serializers import serialize
+from django.core.mail import send_mail
 from django.contrib import admin
 from django.contrib import messages
 from django.http import HttpResponse
 from django.utils.translation import ugettext_lazy as _
+from django.shortcuts import render
 from .models import Student, Department, Course, Address, Phone
+from .forms import EmailForm
 
 
 class AddresInline(admin.TabularInline):
@@ -26,7 +29,7 @@ class StudentAdmin(admin.ModelAdmin):
     # list_editable = ('active',)
     list_filter = ('active', 'date_joined')
     search_fields = ('name', 'email')
-    actions = ['activate_users', 'deactivate_users', 'export_as_json']
+    actions = ['activate_users', 'deactivate_users', 'export_as_json', 'send_msg']
     inlines = [AddresInline, PhoneInline]
 
     def activate_users(self, request, queryset):
@@ -56,18 +59,30 @@ class StudentAdmin(admin.ModelAdmin):
         serialize('json', queryset, stream=response)
         return response
 
+    def send_msg(self, request, queryset):
+        if 'post' in request.POST:
+            form = EmailForm(request.POST)
+            if form.is_valid():
+                emails = [q.email for q in queryset]
+                subject = form.cleaned_data.get('subject')
+                message = form.cleaned_data.get('message')
+                from_email = form.cleaned_data.get('from_mail')
+                sent = send_mail(subject=subject,
+                                 message=message,
+                                 from_email=from_email,
+                                 recipient_list=emails)
+                if sent:
+                    messages.success(request, _('Emails Sent!'))
+        else:
+            form = EmailForm(initial={'_selected_action': request.POST.getlist(admin.ACTION_CHECKBOX_NAME)})
+        return render(request, 'messages.html', {'form': form})
+
 
 admin.site.register(Student, StudentAdmin)
 
 
 class CourseAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
-
-    def formfield_for_choice_field(self, db_field, request=None, **kwargs):
-        # if db_field.name == 'semester':
-        #     print kwargs
-            # kwargs['choices'] += ('5', '2015.1')
-        return super(CourseAdmin, self).formfield_for_choice_field(db_field, request, **kwargs)
 
 admin.site.register(Course, CourseAdmin)
 
