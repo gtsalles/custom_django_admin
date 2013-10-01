@@ -1,3 +1,7 @@
 Django
 South
 django-decouple
+django-ckeditor
+django-suit
+django-grappelli
+django-admin-tools

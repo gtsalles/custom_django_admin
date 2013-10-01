@@ -1,5 +1,6 @@
 from decouple import Config
 import os
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..')
 location = lambda x: os.path.join(PROJECT_ROOT, x)
@@ -44,7 +45,7 @@ MEDIA_ROOT = location('media')
 
 MEDIA_URL = ''
 
-STATIC_ROOT = ''
+STATIC_ROOT = location('static')
 
 STATIC_URL = '/static/'
 
@@ -81,6 +82,13 @@ TEMPLATE_DIRS = ()
 
 INSTALLED_APPS = (
     'south',
+    'ckeditor',
+    # 'suit',
+    # 'grappelli',
+    # 'admin_tools',
+    # 'admin_tools.theming',
+    # 'admin_tools.menu',
+    # 'admin_tools.dashboard',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -123,3 +131,18 @@ EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = config('EMAIL_PORT')
+
+# Required for django-ckeditor
+CKEDITOR_UPLOAD_PATH = location('media/uploads')
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'height': 200,
+        'width': 500,
+    },
+}
+
+# Required for django-suit
+TEMPLATE_CONTEXT_PROCESSORS = TCP + (
+    'django.core.context_processors.request',
+)

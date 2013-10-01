@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
+
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 
 
 SEMESTER_CHOICES = (
@@ -15,65 +16,86 @@ class Student(models.Model):
     Model to represent a Student in a University
     """
 
-    name = models.CharField(_('Name'), max_length=30)
+    name = models.CharField('Nome', max_length=30)
     email = models.EmailField()
-    picture = models.ImageField(upload_to='uploads/', blank=True)
-    active = models.BooleanField(_('Active'), default=True)
-    date_joined = models.DateTimeField(_('Member Since'), auto_now_add=True)
-    department = models.ForeignKey('Department')
+    picture = models.ImageField('Imagem', upload_to='uploads/', blank=True)
+    active = models.BooleanField('Ativo', default=True)
+    date_joined = models.DateTimeField('Membro desde', auto_now_add=True)
+    department = models.ForeignKey('Department', verbose_name='Departamento')
+    bio = models.TextField('Biografia', blank=True)
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Estudante'
+        verbose_name_plural = 'Estudantes'
 
 
 class Department(models.Model):
     """
-    Departament
+    A Departament inside the university
     """
 
-    name = models.CharField(_('Name'), max_length=30)
+    name = models.CharField('Nome', max_length=30)
 
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'Departamento'
+        verbose_name_plural = 'Departamentos'
+
 
 class Course(models.Model):
     """
-    Course
+    Model to represent a Course that belongs to a Departament
     """
 
-    name = models.CharField(_('Name'), max_length=30)
-    slug = models.SlugField()
-    department = models.ForeignKey(Department)
+    name = models.CharField('Nome', max_length=30)
+    slug = models.SlugField(blank=True)
+    department = models.ForeignKey(Department, verbose_name='Departamento')
     student = models.ManyToManyField(Student, blank=True)
-    semester = models.CharField(_('Semester'), max_length=10, choices=SEMESTER_CHOICES)
+    semester = models.CharField('Semestre', max_length=10, choices=SEMESTER_CHOICES)
 
     def __unicode__(self):
         return u'%s - %s' % (self.name, self.department.name)
 
+    class Meta:
+        verbose_name = 'Curso'
+        verbose_name_plural = 'Cursos'
+
 
 class Address(models.Model):
     """
-    A model to represent a user address
+    A model to represent a Student address
     """
 
     student = models.ForeignKey(Student)
-    street = models.CharField(_('Street'), max_length=50)
-    number = models.IntegerField(_('Number'), max_length=10)
-    neighborhood = models.CharField(_('Neighborhood'), max_length=30)
-    city = models.CharField(_('City'), max_length=30)
+    street = models.CharField('Rua', max_length=50)
+    number = models.IntegerField('Número', max_length=10)
+    neighborhood = models.CharField('Bairro', max_length=30)
+    city = models.CharField('Cidade', max_length=30)
 
     def __unicode__(self):
         return u'%s, %s - %s', self.street, self.number, self.neighborhood
 
     class Meta:
-        verbose_name_plural = _('Adresses')
+        verbose_name = 'Endereço'
+        verbose_name_plural = 'Endereços'
 
 
 class Phone(models.Model):
     """
-    A Model to represent the telephone number of the user
+    A Model to represent the telephone number of the Student
     """
 
     student = models.ForeignKey(Student)
-    number = models.CharField(_('Number'), max_length=15)
+    number = models.CharField('Número', max_length=15)
+
+    def __unicode__(self):
+        return self.number
+
+    class Meta:
+        verbose_name = 'Telefone'
+        verbose_name_plural = 'Telefones'
